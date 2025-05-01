@@ -10,6 +10,7 @@ import {
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+import { RandomTables } from './components/randomTables.js';
 
 // Create an express app
 const app = express();
@@ -51,6 +52,23 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         },
       });
     }
+
+    if (commandName === 'injury') {
+      const result = RandomTables.injuryRoll();
+      await interaction.editReply(`**Injury Result:**\n\`\`\`\n${result}\n\`\`\``);
+    }
+
+    if (commandName === 'advancement') {
+      const result = RandomTables.advanceRoll();
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: `**Advancement Result:**\n\`\`\`\n${result}\n\`\`\``,
+      },
+    })
+    }
+
 
     console.error(`unknown command: ${name}`);
     return res.status(400).json({ error: 'unknown command' });

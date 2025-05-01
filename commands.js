@@ -26,6 +26,23 @@ const TEST_COMMAND = {
   contexts: [0, 1, 2],
 };
 
+const INJURY_ROLL_COMMAND = {
+  name: 'injury',
+  description: 'Rolls a random injury outcome using the d66 injury table.',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+};
+
+const ADVANCE_ROLL_COMMAND = {
+  name: 'advancement',
+  description: 'Rolls a random advancement using the 2D6 advancement table.',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+};
+
+
 // Command containing options
 const CHALLENGE_COMMAND = {
   name: 'challenge',
@@ -44,6 +61,9 @@ const CHALLENGE_COMMAND = {
   contexts: [0, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INJURY_ROLL_COMMAND, ADVANCE_ROLL_COMMAND];
 
+console.log('Registering commands...');
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
+console.log('Commands registered!');
+

@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { Dice } from './components/dice.js';
 
 export async function DiscordRequest(endpoint, options) {
   // append endpoint to root API URL
@@ -34,6 +35,10 @@ export async function InstallGlobalCommands(appId, commands) {
   } catch (err) {
     console.error(err);
   }
+}
+
+export function rarityRoll(rarity) {
+  return Dice.roll2D6 > rarity ? true : false;
 }
 
 // Simple method that returns a random emoji from list
