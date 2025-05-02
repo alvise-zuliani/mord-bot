@@ -16,7 +16,7 @@ export class RandomTables {
         let outcomes = [];
         for (let i = 0; i < Dice.rollD6(); i++) {
           const newRoll = Dice.rollD66();
-          const outcome = injuryRoll(newRoll);
+          const outcome = RandomTables.injuryRoll(newRoll);
           // skip Dead, Captured, Multiple Injuries outcomes to avoid infinite loops
           if (!['Dead', 'Captured', 'Multiple Injuries'].includes(outcome.description)) {
             outcomes.push(outcome);
@@ -250,6 +250,10 @@ export class RandomTables {
             return _countMatches(result, 2);
         }
 
+        function _declare(finding) {
+            return `You find ${finding}.`;
+        }
+
         function _shopRoll(){
             const roll = Dice.rollD6(true);
             const foundLuckyCharm = roll === 1;
@@ -260,10 +264,6 @@ export class RandomTables {
 
         function _corpseRoll() {
             const roll = Dice.rollD6();
-
-            function _declare(finding) {
-                return `You find ${finding}.`
-            }
 
             switch(true) {
                 case (roll >= 1 && roll <= 2): {
@@ -287,10 +287,6 @@ export class RandomTables {
         function _overturnedCartRoll() {
             const roll = Dice.rollD6();
 
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
-
             switch(true) {
                 case (roll >= 1 && roll <= 2): {
                     return _declare('a Mordheim map');
@@ -306,10 +302,6 @@ export class RandomTables {
 
         function _smithyRoll() {
             const roll = Dice.rollD6();
-
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
 
             switch(true) {
                 case (roll === 1): {
@@ -336,10 +328,6 @@ export class RandomTables {
         function _fletcherRoll() {
             const roll = Dice.rollD6();
 
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
-
             switch(true) {
                 case (roll >= 1  && roll <= 2): {
                     return _declare(`${Dice.rollD3(true)} short bows`);
@@ -361,10 +349,6 @@ export class RandomTables {
 
         function _gunsmithRoll() {
             const roll = Dice.rollD6();
-
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
 
             switch(true) {
                 case (roll === 1): {
@@ -391,10 +375,6 @@ export class RandomTables {
         function _armourerRoll() {
             const roll = Dice.rollD6();
 
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
-
             switch(true) {
                 case (roll >= 1 && roll <= 2): {
                     return _declare(`${Dice.rollD3(true)} shields or bucklers (choose which)`);
@@ -417,10 +397,6 @@ export class RandomTables {
         function _jewelsmithRoll() {
             const roll = Dice.rollD6();
 
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
-
             switch(true) {
                 case (roll >= 1 && roll <= 2): {
                     return _declare(`quartz stones worth ${TextDecoration.rolled((Dice.rollD6() * 10).toString())}`);
@@ -439,10 +415,6 @@ export class RandomTables {
 
         function _merchantsHouseRoll() {
             const roll = Dice.rollXD6(2, false);
-            
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
 
             const doubles = roll[0] === roll[1];
 
@@ -454,10 +426,6 @@ export class RandomTables {
         }
 
         function  _hiddenTreasureRoll() {
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
-
             const roll = Dice.rollD6();
 
             const finding = [`${TextDecoration.rolled((Dice.rollXD6(5) * 5).toString())} gc`];
@@ -476,10 +444,6 @@ export class RandomTables {
 
         function _dwarfSmithyRoll() {
             const roll = Dice.rollD6();
-
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
 
             switch(true) {
                 case (roll === 1): {
@@ -504,10 +468,6 @@ export class RandomTables {
         }
 
         function _slaughteredWarbandsRoll(){
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
-            
             const roll = Dice.rollD6();
 
             const finding = [`${TextDecoration.rolled((Dice.rollXD6(3) * 5).toString())} gc`, `${Dice.rollD6(true)} daggers`];
@@ -526,10 +486,6 @@ export class RandomTables {
 
         function _noblesVillaRoll() {
             const roll = Dice.rollD6();
-
-            function _declare(finding) {
-                return `You find ${finding}.`;
-            }
 
             switch(true) {
                 case (roll >= 1 && roll <= 2): {
@@ -586,16 +542,15 @@ export class RandomTables {
                 6: { name: 'Noble\'s Villa', description: `${TextDecoration.fluff('You find a fine house which is partially ruined. It has been thoroughly ransacked and all the furniture has been stripped of its fine fabrics. Shards of broken pottery of the finest quality are scattered over the floor.')}\n\n${_noblesVillaRoll()}`, matched: _sixOfAKind(6) },
             }
             };
-        }
-
-        for (const tier of ['sixOfAKind', 'fiveOfAKind', 'fourOfAKind', 'triples', 'doubles']) {
-            for (const face in matchResults[tier]) {
-              if (matchResults[tier][face].matched) {
-                return `**${matchResults[tier][face].name}**\n\n${matchResults[tier][face].description}`;
-              }
+            for (const tier of ['sixOfAKind', 'fiveOfAKind', 'fourOfAKind', 'triples', 'doubles']) {
+                for (const face in locations[tier]) {
+                  if (locations[tier][face].matched) {
+                    return `**${locations[tier][face].name}**\n\n${locations[tier][face].description}`;
+                  }
+                  return '';
+                }
             }
-          }
-          
+        }
 
     function _earn() {
         function _declare(quantity){
@@ -605,27 +560,27 @@ export class RandomTables {
         const sum = sum(rolls);
 
         switch(true) {
-        case (sum >= 1 && sum <= 5): {
-            return _declare(1);
-        }
-        case (sum >= 6 && sum <= 11): {
-            return _declare(2);
-        }
-        case (sum >= 12 && sum <= 17): {
-            return _declare(3);
-        }
-        case (sum >= 18 && sum <= 24): {
-            return _declare(4);
-        }
-        case (sum >= 25 && sum <= 30): {
-            return _declare(5);
-        }
-        case (sum >= 31 && sum <= 35): {
-            return _declare(6);
-        }
-        case (sum >= 36): {
-            return _declare(7);
-        }
+            case (sum >= 1 && sum <= 5): {
+                return _declare(1);
+            }
+            case (sum >= 6 && sum <= 11): {
+                return _declare(2);
+            }
+            case (sum >= 12 && sum <= 17): {
+                return _declare(3);
+            }
+            case (sum >= 18 && sum <= 24): {
+                return _declare(4);
+            }
+            case (sum >= 25 && sum <= 30): {
+                return _declare(5);
+            }
+            case (sum >= 31 && sum <= 35): {
+                return _declare(6);
+            }
+            case (sum >= 36): {
+                return _declare(7);
+            }
         }
     }
 

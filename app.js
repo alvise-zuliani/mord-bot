@@ -11,6 +11,7 @@ import {
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 import { RandomTables } from './components/randomTables.js';
+import { TradingPost } from './components/tradingPost.js';
 
 // Create an express app
 const app = express();
@@ -69,6 +70,27 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: `**Injury Result:**\n\n${result}\n`,
+        },
+      });
+    }
+
+    if (name === 'explore') {
+      const result = RandomTables.explorationRoll();
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `**Exploration Result:**\n\n${result}\n`,
+        },
+      });
+    }
+
+    if (name === 'trade') {
+      const item = req.body.data.options[0];
+      const result = TradingPost.findRareItem(item);
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `**${item.value}:**\n\n${result}\n`,
         },
       });
     }
