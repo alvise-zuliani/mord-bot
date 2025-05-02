@@ -53,22 +53,62 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       });
     }
 
-    if (commandName === 'injury') {
-      const result = RandomTables.injuryRoll();
-      await interaction.editReply(`**Injury Result:**\n\`\`\`\n${result}\n\`\`\``);
-    }
-
-    if (commandName === 'advancement') {
+    if (name === 'advance') {
       const result = RandomTables.advanceRoll();
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          // Fetches a random emoji to send from a helper function
-          content: `**Advancement Result:**\n\`\`\`\n${result}\n\`\`\``,
-      },
-    })
+          content: `**Advancement Result:**\n\n${result}\n`,
+        },
+      });
     }
+    
+    if (name === 'injury') {
+      const result = RandomTables.injuryRoll();
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `**Injury Result:**\n\n${result}\n`,
+        },
+      });
+    }
+    
+    // "challenge" command
+  if (name === 'challenge' && id) {
+    // Interaction context
+    const context = req.body.context;
+    // User ID is in user field for (G)DMs, and member for servers
+    const userId = context === 0 ? req.body.member.user.id : req.body.user.id;
+    // User's object choice
+    const objectName = req.body.data.options[0].value;
 
+    // Create active game using message ID as the game ID
+    activeGames[id] = {
+        id: userId,
+        objectName,
+    };
+
+    return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+        content: `Rock papers scissors challenge from <@${userId}>`,
+        components: [
+        {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+            {
+                type: MessageComponentTypes.BUTTON,
+                // Append the game ID to use later on
+                custom_id: `accept_button_${req.body.id}`,
+                label: 'Accept',
+                style: ButtonStyleTypes.PRIMARY,
+            },
+            ],
+          },
+        ],
+      },
+      });
+    }
 
     console.error(`unknown command: ${name}`);
     return res.status(400).json({ error: 'unknown command' });

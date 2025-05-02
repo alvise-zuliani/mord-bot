@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { getRPSChoices } from './game.js';
-import { capitalize, InstallGlobalCommands } from './utils.js';
+import { capitalize, InstallGlobalCommands, InstallGuildCommands } from './utils.js';
 
 // Get the game choices from game.js
 function createCommandChoices() {
@@ -35,7 +35,7 @@ const INJURY_ROLL_COMMAND = {
 };
 
 const ADVANCE_ROLL_COMMAND = {
-  name: 'advancement',
+  name: 'advance',
   description: 'Rolls a random advancement using the 2D6 advancement table.',
   type: 1,
   integration_types: [0, 1],
@@ -64,6 +64,7 @@ const CHALLENGE_COMMAND = {
 const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INJURY_ROLL_COMMAND, ADVANCE_ROLL_COMMAND];
 
 console.log('Registering commands...');
-InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
+// InstallGuildCommands(process.env.APP_ID, process.env.GUILD_ID, ALL_COMMANDS); // TEST SERVER FOR DEBUGGING
+InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS); // USE IN PRODUCTION
 console.log('Commands registered!');
 
