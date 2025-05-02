@@ -588,37 +588,38 @@ export class RandomTables {
             };
         }
 
-        function _earn() {
-
-            function _declare(quantity){
-                return `${quantity} shards found.`;
-            }
-
-            const sum = sum(rolls);
-
-            switch(true) {
-            case (sum >= 1 && sum <= 5): {
-                return _declare(1);
-            }
-            case (sum >= 6 && sum <= 11): {
-                return _declare(2);
-            }
-            case (sum >= 12 && sum <= 17): {
-                return _declare(3);
-            }
-            case (sum >= 18 && sum <= 24): {
-                return _declare(4);
-            }
-            case (sum >= 25 && sum <= 30): {
-                return _declare(5);
-            }
-            case (sum >= 31 && sum <= 35): {
-                return _declare(6);
-            }
-            case (sum >= 36): {
-                return _declare(7);
-            }
-            }
+    function _earn() {
+        function _declare(quantity){
+            return `${quantity} shards found.`;
         }
+
+        const sum = sum(rolls);
+
+        switch(true) {
+        case (sum >= 1 && sum <= 5): {
+            return _declare(1);
+        }
+        case (sum >= 6 && sum <= 11): {
+            return _declare(2);
+        }
+        case (sum >= 12 && sum <= 17): {
+            return _declare(3);
+        }
+        case (sum >= 18 && sum <= 24): {
+            return _declare(4);
+        }
+        case (sum >= 25 && sum <= 30): {
+            return _declare(5);
+        }
+        case (sum >= 31 && sum <= 35): {
+            return _declare(6);
+        }
+        case (sum >= 36): {
+            return _declare(7);
+        }
+        }
+    }
+
+    return `${_earn()}\n\n${_explore()}`
   }
 }
