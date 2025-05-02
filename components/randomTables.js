@@ -588,6 +588,15 @@ export class RandomTables {
             };
         }
 
+        for (const tier of ['sixOfAKind', 'fiveOfAKind', 'fourOfAKind', 'triples', 'doubles']) {
+            for (const face in matchResults[tier]) {
+              if (matchResults[tier][face].matched) {
+                return `**${matchResults[tier][face].name}**\n\n${matchResults[tier][face].description}`;
+              }
+            }
+          }
+          
+
     function _earn() {
         function _declare(quantity){
             return `${quantity} shards found.`;
