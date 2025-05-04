@@ -137,8 +137,12 @@ export class RandomTables {
       }
   }
     
-  static advanceRoll() {
+  static advanceRoll(model) {
     const roll = Dice.roll2D6();
+
+    if (model === 'henchman') {
+        return roll >= 2 ? TextDecoration.rolled('Dead.') : TextDecoration.rolled('Alive and well.')
+    }
 
     function _strOrAtkRoll() {
         const roll = Dice.rollD6();

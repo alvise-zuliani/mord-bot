@@ -12,6 +12,7 @@ import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 import { RandomTables } from './components/randomTables.js';
 import { TradingPost } from './components/tradingPost.js';
+import { advanceRoll } from './random_tables/advancement.js';
 
 // Create an express app
 const app = express();
@@ -55,7 +56,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     }
 
     if (name === 'advance') {
-      const result = RandomTables.advanceRoll();
+      const result = advanceRoll(req.body.data.options[0].value);
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {

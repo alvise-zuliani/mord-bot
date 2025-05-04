@@ -36,10 +36,18 @@ const INJURY_ROLL_COMMAND = {
 
 const ADVANCE_ROLL_COMMAND = {
   name: 'advance',
-  description: 'Rolls a random advancement using the 2D6 advancement table.',
+  options: [
+    {
+      type: 3,
+      name: 'Model type',
+      description: 'Who is it for?',
+      required: true,
+      choices: [{name: 'hero', value: 0}, {name: 'henchman', value: 1}],
+    },
+  ],
   type: 1,
   integration_types: [0, 1],
-  contexts: [0, 1, 2],
+  contexts: [0, 2],
 };
 
 const EXPLORATION_ROLL_COMMAND = {
