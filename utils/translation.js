@@ -25,6 +25,20 @@ const translations = {
         it: "soldato"
       }
     },
+    rarity: {
+      found: {
+        en: "Found!",
+        it: "Trovato!"
+      },
+      notFound: {
+        en: "Couldn't find it...",
+        it: "Niente da fare..." 
+      },
+      howRare: {
+        en: "How rare is the item you are trying to find?",
+        it: "Quanto è raro l'oggetto che stai cercando?"
+      }
+    },
     advancement: {
       strength: {
         en: "+1 Strenght.",

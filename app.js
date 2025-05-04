@@ -11,7 +11,7 @@ import {
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 import { RandomTables } from './components/randomTables.js';
-import { TradingPost } from './components/tradingPost.js';
+import { rarity } from './random_tables/rarity.js';
 import { advanceRoll } from './random_tables/advancement.js';
 
 // Create an express app
@@ -85,13 +85,12 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       });
     }
 
-    if (name === 'trade') {
-      const item = req.body.data.options[0];
-      const result = TradingPost.findRareItem(item);
+    if (name === 'find-item') {
+      const result = rarityRoll(item);
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `**${item.value}:**\n\n${result}\n`,
+          content: `**Search result:**\n\n${result}\n`,
         },
       });
     }

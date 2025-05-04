@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { getRPSChoices } from './game.js';
 import { capitalize, InstallGlobalCommands, InstallGuildCommands } from './utils.js';
-import { TradingPost } from './components/tradingPost.js';
+import { TradingPost } from './components/rarity.js';
+import { t } from './utils/translation.js';
 
 // Get the game choices from game.js
 function createCommandChoices(choices) {
@@ -77,14 +78,14 @@ const CHALLENGE_COMMAND = {
   contexts: [0, 2],
 };
 
-const TRADING_POST_COMMAND = {
-  name: 'trade',
+const FIND_ITEM_COMMAND = {
+  name: 'find-item',
   description: 'Find rare items at the Trading Post.',
   options: [
     {
       type: 3,
       name: 'Item',
-      description: 'What are you looking for?',
+      description: t('rarity.howRare'),
       required: true,
       choices: createCommandChoices(TradingPost.getItemsChoices()),
     },
@@ -94,7 +95,7 @@ const TRADING_POST_COMMAND = {
   contexts: [0, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INJURY_ROLL_COMMAND, ADVANCE_ROLL_COMMAND, EXPLORATION_ROLL_COMMAND, TRADING_POST_COMMAND];
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INJURY_ROLL_COMMAND, ADVANCE_ROLL_COMMAND, EXPLORATION_ROLL_COMMAND, FIND_ITEM_COMMAND];
 
 console.log('Registering commands...');
 // InstallGuildCommands(process.env.APP_ID, process.env.GUILD_ID, ALL_COMMANDS); // TEST SERVER FOR DEBUGGING
