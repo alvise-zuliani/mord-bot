@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Dice } from './components/dice.js';
+import { Dice } from './utils/dice.js';
 
 export async function DiscordRequest(endpoint, options) {
   // append endpoint to root API URL
